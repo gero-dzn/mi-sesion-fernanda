@@ -143,16 +143,16 @@ function PosterContent({
       {/* STICKER del personaje — protagonista visual */}
       <div
         className="flex-1 flex items-center justify-center"
-        style={{ minHeight: px(60) }}
+        style={{ minHeight: px(60), width: '100%' }}
       >
         <img
           src={stickerSrc}
           alt={personajeNombre}
           style={{
             width: '100%',
-            maxWidth: px(4500),
-            height: 'auto',
+            height: px(900),
             objectFit: 'contain',
+            display: 'block',
           }}
         />
       </div>
