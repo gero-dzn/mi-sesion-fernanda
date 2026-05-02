@@ -156,12 +156,16 @@ LU — patrones:
 - Habla con superioridad sutil
 
 DEBBIE — patrones:
-- Decir verdades incómodas y arrepentirse
-- Decisiones impulsivas y revertirlas
-- Fobia al silencio emocional
-- Frontalidad como armadura
-- Cambios de opinión rápidos
-- "Yo no me callo nada"
+- Posición de observadora dentro de su grupo de amigas
+- Reservada con sus opiniones — habla poco pero cuando habla, va al grano
+- Identidad intelectual: lectura, master, ideas, no se prende en chusmeríos superficiales
+- Decidió cosas importantes sin armar drama (dejó al novio del master, salió del clóset)
+- Madurez emocional alta — se conoce a sí misma, no necesita validación externa
+- Cuando la critican, no se defiende ruidosamente: minimiza, cambia tema, o simplemente no contesta
+- Se aburre de las dinámicas repetitivas del grupo
+- Suele ser quien pone perspectiva cuando los demás están en crisis
+
+NO confundir con Lu (que sí critica desde la superioridad) o con la idea estereotipada de "la directa cruda" — Debbie es discreta, no frontal.
 
 MELINA — patrones:
 - Urgencia amorosa o de decisión
@@ -236,13 +240,13 @@ LU:
 - "Yo nunca haría eso. Por eo me sale tan natural decirlo."
 
 DEBBIE:
-- "No es que sea cruda. Es que ustedes son tibias."
-- "Yo digo lo que pienso. Que ustedes no lo digan es un tema suyo."
-- "No me arrepiento de lo que dije, me arrepiento del momento que elegí."
-- "Si querían que sea suave no me hubieran preguntado a mí."
-- "No filtro nada. Edito en vivo, pero apenas."
-- "Lo que dije es verdad. Lo que pasa es que nadie quería oírlo."
-- "Pienso una cosa y digo esa misma cosa. Es un sistema, ¿sabés?"
+- "No es que no opine. Es que ya saqué mis conclusiones y prefiero quedarme con ellas."
+- "Prefiero leer un libro a entrar en una conversación que ya sé cómo termina."
+- "No me prendo en cualquier tema. Eso no me hace fría, me hace selectiva."
+- "Estoy bien. No necesito estar siempre demostrándolo."
+- "No es desinterés. Es que ya viví esa misma escena en otra versión."
+- "No me peleo con nadie. Tampoco hago como si todo me importara igual."
+- "Salí del master, salí del novio del master. A veces saber lo que no querés es lo que más te ordena."
 
 MELINA:
 - "Si tarda en pasar, ya pasó."

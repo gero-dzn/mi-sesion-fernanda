@@ -94,16 +94,16 @@ export const PERSONAJES: Record<PersonajeKey, Personaje> = {
 
   DEBBIE: {
     nombre: 'DEBBIE',
-    descripcion: 'Decís lo que nadie dice. Tenés razón. Y a la noche te preguntás por qué nadie te llama.',
-    fraseIconica: 'No es que sea cruda. Es que ustedes son tibias.',
+    descripcion: 'La intelectual del grupo. Observás desde afuera, no opinás cuando se ponen densas, y cuando hablás es porque ya pensaste tres veces.',
+    fraseIconica: 'No es que no opine. Es que ya saqué mis conclusiones y prefiero quedarme con ellas.',
     frasesIconicas: [
-      'No es que sea cruda. Es que ustedes son tibias.',
-      'Yo digo lo que pienso. Que ustedes no lo digan es un tema suyo.',
-      'No me arrepiento de lo que dije, me arrepiento del momento que elegí.',
-      'Si querían que sea suave no me hubieran preguntado a mí.',
-      'No filtro nada. Edito en vivo, pero apenas.',
-      'Lo que dije es verdad. Lo que pasa es que nadie quería oírlo.',
-      'Pienso una cosa y digo esa misma cosa. Es un sistema, ¿sabés?',
+      'No es que no opine. Es que ya saqué mis conclusiones y prefiero quedarme con ellas.',
+      'Prefiero leer un libro a entrar en una conversación que ya sé cómo termina.',
+      'No me prendo en cualquier tema. Eso no me hace fría, me hace selectiva.',
+      'Estoy bien. No necesito estar siempre demostrándolo.',
+      'No es desinterés. Es que ya viví esa misma escena en otra versión.',
+      'No me peleo con nadie. Tampoco hago como si todo me importara igual.',
+      'Salí del master, salí del novio del master. A veces saber lo que no querés es lo que más te ordena.',
     ],
   },
 
