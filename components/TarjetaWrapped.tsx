@@ -150,7 +150,7 @@ function PosterContent({
           alt={personajeNombre}
           style={{
             width: '100%',
-            maxWidth: px(720),
+            maxWidth: px(1800),
             height: 'auto',
             objectFit: 'contain',
           }}
