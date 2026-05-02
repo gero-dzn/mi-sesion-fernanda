@@ -1,65 +1,101 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Hero from '@/components/Hero';
+import Conversacion from '@/components/Conversacion';
+import Diagnostico from '@/components/Diagnostico';
+import TarjetaWrapped from '@/components/TarjetaWrapped';
+import { PersonajeKey } from '@/lib/personajes';
+import { MensajeHistorial } from '@/lib/prompts';
+
+type Estado = 'hero' | 'conversacion' | 'cerrando' | 'diagnostico' | 'tarjeta';
+
+interface CierreData {
+  fraseIconica: string;
+  personaje: PersonajeKey;
+  descripcionPersonaje: string;
+  numeroSesion: number;
+}
 
 export default function Home() {
+  const [estado, setEstado] = useState<Estado>('hero');
+  const [cierre, setCierre] = useState<CierreData | null>(null);
+  const [numeroSesion] = useState(() => Math.floor(Math.random() * 81) + 40);
+
+  const handleCerrar = async (historial: MensajeHistorial[]) => {
+    setEstado('cerrando');
+    try {
+      const res = await fetch('/api/sesion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ modo: 'cerrar', historial }),
+      });
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('[handleCerrar] API respondió con error:', res.status, errorText);
+        throw new Error(`API error ${res.status}: ${errorText}`);
+      }
+
+      const data = await res.json();
+      console.log('[handleCerrar] Datos recibidos:', data);
+
+      setCierre({
+        fraseIconica: data.frase_iconica,
+        personaje: data.personaje,
+        descripcionPersonaje: data.descripcion_personaje,
+        numeroSesion: data.numero_sesion,
+      });
+      setEstado('diagnostico');
+    } catch (e) {
+      console.error('[handleCerrar] Error completo:', e);
+      alert('Error cerrando sesión. Mirá la consola del navegador (F12) y la terminal del server para ver el detalle. Probá de nuevo.');
+      setEstado('conversacion');
+    }
+  };
+
+  const handleNueva = () => {
+    setCierre(null);
+    setEstado('hero');
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main>
+      {estado === 'hero' && <Hero onEmpezar={() => setEstado('conversacion')} />}
+      {estado === 'conversacion' && (
+        <Conversacion onCerrar={handleCerrar} numeroSesion={numeroSesion} />
+      )}
+      {estado === 'cerrando' && (
+        <div className="min-h-screen bg-cinema flex items-center justify-center px-6">
+          <div className="text-center fade-in">
+            <div className="t-caption text-white/40 mb-4">PREPARANDO DIAGNÓSTICO</div>
+            <p className="t-body-lg italic text-white/80">Fernanda está pensándolo bien...</p>
+            <div className="flex gap-1.5 justify-center mt-6">
+              <span className="pulse-dot bg-[#CC0055] rounded-full" style={{ width: 8, height: 8, animationDelay: '0s' }} />
+              <span className="pulse-dot bg-[#CC0055] rounded-full" style={{ width: 8, height: 8, animationDelay: '0.2s' }} />
+              <span className="pulse-dot bg-[#CC0055] rounded-full" style={{ width: 8, height: 8, animationDelay: '0.4s' }} />
+            </div>
+          </div>
+        </div>
+      )}
+      {estado === 'diagnostico' && cierre && (
+        <Diagnostico
+          {...cierre}
+          fraseIconica={cierre.fraseIconica}
+          descripcionPersonaje={cierre.descripcionPersonaje}
+          numeroSesion={cierre.numeroSesion}
+          onVerTarjeta={() => setEstado('tarjeta')}
+          onNueva={handleNueva}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      )}
+      {estado === 'tarjeta' && cierre && (
+        <TarjetaWrapped
+          {...cierre}
+          fraseIconica={cierre.fraseIconica}
+          descripcionPersonaje={cierre.descripcionPersonaje}
+          numeroSesion={cierre.numeroSesion}
+          onVolver={() => setEstado('diagnostico')}
+        />
+      )}
+    </main>
   );
 }
