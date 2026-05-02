@@ -5,13 +5,6 @@ export const metadata: Metadata = {
   title: "Mi Sesión con Fernanda · Envidiosa T4",
   description: "Una conversación con la psicoanalista de Vicky. Ella escucha. Vos hablás. Después te dice quién sos.",
   metadataBase: new URL("https://mi-sesion-fernanda.vercel.app"),
-  icons: {
-    icon: [
-      { url: "/fernanda.jpg?v=3", type: "image/jpeg", sizes: "any" },
-    ],
-    shortcut: "/fernanda.jpg?v=3",
-    apple: "/fernanda.jpg?v=3",
-  },
   openGraph: {
     title: "Mi Sesión con Fernanda",
     description: "Tuve sesión con Fernanda. Mirá lo que me dijo.",
