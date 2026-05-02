@@ -58,7 +58,6 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
       const conRespuesta: MensajeHistorial[] = [...nuevoHistorial, { rol: 'fernanda', texto: data.mensaje }];
       setHistorial(conRespuesta);
 
-      // Si era el último turno, marcar la sesión como finalizada y mostrar CTA
       if (data.esUltimoTurno) {
         setSesionFinalizada(true);
       }
@@ -72,10 +71,19 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
 
   return (
     <div className="min-h-screen bg-cinema flex flex-col">
-      <header className="sticky top-0 z-30 bg-black/40 backdrop-blur-md border-b border-white/5 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
-        <div className="min-w-0">
+      {/* Header con safe-area-top para notch */}
+      <header
+        className="sticky top-0 z-30 bg-black/40 backdrop-blur-md border-b border-white/5 flex items-center justify-between gap-3"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top) + 12px)',
+          paddingBottom: '12px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
+        }}
+      >
+        <div className="min-w-0 flex-1">
           <div className="t-caption text-white/40">En sesión</div>
-          <div className="t-subhead text-white/80 mt-0.5 sm:mt-1 truncate">Sesión #{numeroSesion}</div>
+          <div className="t-subhead text-white/80 mt-0.5 truncate">Sesión #{numeroSesion}</div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <div className="t-footnote text-white/40">{turnosPaciente}/{MAX_TURNOS}</div>
@@ -87,19 +95,25 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
         </div>
       </header>
 
-      <div ref={scrollRef} className="conversation flex-1 overflow-y-auto px-4 sm:px-6 py-8 sm:py-10">
-        <div className="max-w-xl mx-auto space-y-8 sm:space-y-10">
+      {/* Conversación scroll */}
+      <div ref={scrollRef} className="conversation flex-1 overflow-y-auto overflow-x-hidden px-4 py-8">
+        <div className="max-w-xl mx-auto space-y-8">
           {historial.map((m, idx) => (
-            <div key={idx} className={`fade-up ${m.rol === 'paciente' ? 'pl-6 sm:pl-12' : 'pr-6 sm:pr-12'}`}>
-              <div className={`t-caption mb-2 sm:mb-3 ${m.rol === 'paciente' ? 'text-[#CC0055]/70 text-right' : 'text-white/40'}`}>
+            <div key={idx} className="fade-up w-full">
+              <div className={`t-caption mb-2 ${m.rol === 'paciente' ? 'text-[#CC0055]/70 text-right' : 'text-white/40'}`}>
                 {m.rol === 'paciente' ? 'VOS' : 'FERNANDA'}
               </div>
               <p
-                className={`whitespace-pre-line ${
+                className={`whitespace-pre-line break-words ${
                   m.rol === 'fernanda'
                     ? 't-body-lg text-white italic font-light'
                     : 't-body text-white/70 text-right'
                 }`}
+                style={{
+                  wordBreak: 'break-word',
+                  overflowWrap: 'break-word',
+                  hyphens: 'auto',
+                }}
               >
                 {m.texto}
               </p>
@@ -107,8 +121,8 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
           ))}
 
           {loading && (
-            <div className="pr-6 sm:pr-12 fade-in">
-              <div className="t-caption text-white/40 mb-3">FERNANDA</div>
+            <div className="w-full fade-in">
+              <div className="t-caption text-white/40 mb-2">FERNANDA</div>
               <div className="flex gap-1.5 items-center">
                 <span className="pulse-dot bg-white/40 rounded-full" style={{ width: 6, height: 6, animationDelay: '0s' }} />
                 <span className="pulse-dot bg-white/40 rounded-full" style={{ width: 6, height: 6, animationDelay: '0.2s' }} />
@@ -119,8 +133,8 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
 
           {/* CTA grande cuando la sesión terminó */}
           {sesionFinalizada && !loading && (
-            <div className="fade-up-slow pt-6">
-              <div className="border-t border-white/10 pt-8 sm:pt-10">
+            <div className="fade-up-slow pt-4">
+              <div className="border-t border-white/10 pt-8">
                 <div className="t-caption text-[#CC0055] mb-3 text-center">SESIÓN CERRADA</div>
                 <h3 className="t-title-1 text-white italic font-light text-center mb-2 leading-snug">
                   Fernanda tiene<br/>algo que decirte.
@@ -130,7 +144,7 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
                 </p>
                 <button
                   onClick={() => onCerrar(historial)}
-                  className="w-full max-w-sm mx-auto block bg-[#CC0055] hover:bg-[#FF1A6E] text-white t-headline py-4 sm:py-5 transition-all"
+                  className="w-full max-w-sm mx-auto block bg-[#CC0055] hover:bg-[#FF1A6E] text-white t-headline py-4 transition-all"
                 >
                   Recibir diagnóstico →
                 </button>
@@ -142,13 +156,21 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
 
       {/* Input footer (solo si la sesión sigue activa) */}
       {!sesionFinalizada && (
-        <div className="sticky bottom-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent pt-6 sm:pt-8 px-4 sm:px-6 pb-5 sm:pb-6">
+        <div
+          className="sticky bottom-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A] to-transparent"
+          style={{
+            paddingTop: '24px',
+            paddingLeft: '16px',
+            paddingRight: '16px',
+            paddingBottom: 'calc(env(safe-area-inset-bottom) + 16px)',
+          }}
+        >
           <div className="max-w-xl mx-auto">
             {puedeCerrar && (
               <button
                 onClick={() => onCerrar(historial)}
                 disabled={loading}
-                className="block mx-auto mb-3 sm:mb-4 t-footnote text-[#CC0055] hover:text-[#FF1A6E] transition-colors uppercase tracking-widest disabled:opacity-30"
+                className="block mx-auto mb-3 t-footnote text-[#CC0055] hover:text-[#FF1A6E] transition-colors uppercase tracking-widest disabled:opacity-30"
               >
                 ⏸ Cerrar sesión y recibir diagnóstico
               </button>
@@ -161,7 +183,8 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
                 placeholder={historial.length <= 1 ? 'Escribí lo que sea...' : 'Seguí contándole a Fernanda...'}
                 rows={2}
                 disabled={loading}
-                className="w-full bg-transparent text-white t-body p-3 sm:p-4 resize-none disabled:opacity-50"
+                className="w-full bg-transparent text-white p-3 resize-none disabled:opacity-50"
+                style={{ fontSize: '16px' }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -169,19 +192,19 @@ export default function Conversacion({ onCerrar, numeroSesion }: Props) {
                   }
                 }}
               />
-              <div className="flex items-center justify-between px-3 sm:px-4 pb-2.5 sm:pb-3">
+              <div className="flex items-center justify-between px-3 pb-2.5 gap-2">
                 <div className="t-footnote text-white/30">{500 - input.length}</div>
                 <button
                   onClick={handleEnviar}
                   disabled={input.trim().length < 3 || loading}
-                  className="bg-[#CC0055] hover:bg-[#FF1A6E] text-white t-subhead px-4 sm:px-5 py-2 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="bg-[#CC0055] hover:bg-[#FF1A6E] text-white t-subhead px-4 py-2 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
                 >
                   {loading ? '...' : 'Responder →'}
                 </button>
               </div>
             </div>
 
-            <div className="t-footnote text-white/25 text-center mt-2 sm:mt-3">
+            <div className="t-footnote text-white/25 text-center mt-2">
               {turnosRestantes > 0
                 ? `Te quedan ${turnosRestantes} ${turnosRestantes === 1 ? 'turno' : 'turnos'}`
                 : 'Último turno'}

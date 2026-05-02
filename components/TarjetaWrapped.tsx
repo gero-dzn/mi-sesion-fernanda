@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect, useLayoutEffect } from 'react';
+import { useRef, useState, useLayoutEffect } from 'react';
 import { toPng } from 'html-to-image';
 import { PERSONAJES, PersonajeKey } from '@/lib/personajes';
 
@@ -23,14 +23,10 @@ const WRAP_CLASS: Record<PersonajeKey, string> = {
   FERNANDA: 'wrap-fernanda',
 };
 
-// Dimensiones reales de story
 const STORY_WIDTH = 1080;
 const STORY_HEIGHT = 1920;
+const SHARE_URL = 'mi-sesion-fernanda.vercel.app';
 
-/**
- * Auto-fit text robusto.
- * Mide después del paint y ajusta el font-size hasta que entre en el container.
- */
 function useAutoFitText(text: string, maxFontSize = 280, minFontSize = 100, safetyMargin = 12) {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -74,10 +70,6 @@ function useAutoFitText(text: string, maxFontSize = 280, minFontSize = 100, safe
   return { containerRef, textRef, fontSize };
 }
 
-/**
- * Componente compartido del contenido de la tarjeta.
- * Se renderiza tanto para preview (escalado) como para export (tamaño real).
- */
 interface PosterContentProps {
   fraseIconica: string;
   descripcionPersonaje: string;
@@ -249,7 +241,7 @@ function PosterContent({
               fontFamily: 'Space Grotesk, sans-serif',
             }}
           >
-            misesionconfernanda.com
+            {SHARE_URL}
           </div>
           <div
             className="text-white/45"
@@ -281,14 +273,12 @@ export default function TarjetaWrapped({
 
   const generar = async (): Promise<string | null> => {
     if (!exportRef.current) return null;
-
-    // Aseguramos que está renderizado al tamaño real antes de exportar
     await new Promise(requestAnimationFrame);
     await new Promise(requestAnimationFrame);
 
     return await toPng(exportRef.current, {
       cacheBust: true,
-      pixelRatio: 1, // ya estamos a 1080x1920 real
+      pixelRatio: 1,
       width: STORY_WIDTH,
       height: STORY_HEIGHT,
       backgroundColor: '#0A0A0A',
@@ -335,13 +325,24 @@ export default function TarjetaWrapped({
   };
 
   return (
-    <div className="min-h-screen bg-cinema flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 fade-up">
+    <div
+      className="min-h-screen bg-cinema flex flex-col items-center justify-center px-4 fade-up"
+      style={{
+        paddingTop: 'calc(env(safe-area-inset-top) + 32px)',
+        paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
+      }}
+    >
       <div className="w-full max-w-[360px] sm:max-w-sm">
-        <div className="t-caption text-white/35 text-center mb-3">
-          TARJETA PARA COMPARTIR · 1080 × 1920
+        {/* Mensaje viral arriba */}
+        <div className="text-center mb-6">
+          <div className="t-caption text-[#CC0055] mb-2">TU DIAGNÓSTICO ESTÁ LISTO</div>
+          <p className="t-body-lg text-white italic font-light leading-snug">
+            Compartilo en tu story.<br/>
+            Que tus amigas se reconozcan también.
+          </p>
         </div>
 
-        {/* ═══ PREVIEW (visible, escalada) ═══ */}
+        {/* PREVIEW (visible, escalada) */}
         <div
           className={`${wrapClass} relative overflow-hidden`}
           style={{ aspectRatio: '9/16', width: '100%' }}
@@ -365,7 +366,7 @@ export default function TarjetaWrapped({
           />
         </div>
 
-        {/* ═══ EXPORT (oculto, tamaño real 1080x1920) ═══ */}
+        {/* EXPORT (oculto, 1080x1920) */}
         <div
           aria-hidden
           style={{
