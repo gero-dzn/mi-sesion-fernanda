@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://mi-sesion-fernanda.vercel.app"),
   icons: {
     icon: [
-      { url: "/fernanda.jpg", type: "image/jpeg" },
+      { url: "/fernanda.jpg?v=3", type: "image/jpeg", sizes: "any" },
     ],
-    shortcut: "/fernanda.jpg",
-    apple: "/fernanda.jpg",
+    shortcut: "/fernanda.jpg?v=3",
+    apple: "/fernanda.jpg?v=3",
   },
   openGraph: {
     title: "Mi Sesión con Fernanda",
