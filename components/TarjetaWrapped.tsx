@@ -23,6 +23,18 @@ const WRAP_CLASS: Record<PersonajeKey, string> = {
   FERNANDA: 'wrap-fernanda',
 };
 
+// Path al sticker — minúsculas, sin tildes
+const STICKER_PATH: Record<PersonajeKey, string> = {
+  VICTORIA: '/stickers/sticker-victoria.png',
+  MATIAS: '/stickers/sticker-matias.png',
+  NICOLAS: '/stickers/sticker-nicolas.png',
+  CAROLINA: '/stickers/sticker-carolina.png',
+  LU: '/stickers/sticker-lu.png',
+  DEBBIE: '/stickers/sticker-debbie.png',
+  MELINA: '/stickers/sticker-melina.png',
+  FERNANDA: '/stickers/sticker-fernanda.png',
+};
+
 const STORY_WIDTH = 1080;
 const STORY_HEIGHT = 1920;
 const SHARE_URL = 'mi-sesion-fernanda.vercel.app';
@@ -74,14 +86,16 @@ interface PosterContentProps {
   fraseIconica: string;
   numeroSesion: number;
   personajeNombre: string;
+  stickerSrc: string;
   scale?: number;
 }
 
-// FRASE ICÓNICA DEL PERSONAJE — la pieza viral, no contiene info de la sesión
+// FRASE ICÓNICA DEL PERSONAJE — la pieza viral
 function PosterContent({
   fraseIconica,
   numeroSesion,
   personajeNombre,
+  stickerSrc,
   scale = 1,
 }: PosterContentProps) {
   const { containerRef, textRef, fontSize } = useAutoFitText(
@@ -98,6 +112,7 @@ function PosterContent({
       className="relative z-10 h-full flex flex-col"
       style={{ padding: px(72) }}
     >
+      {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: px(20) }}>
         <div
           className="font-display font-black text-white leading-none tracking-tight"
@@ -106,7 +121,7 @@ function PosterContent({
           ENVIDIOSA
         </div>
         <div
-          className="font-display font-black text-[#E50914] leading-none"
+          className="font-display font-black text-white leading-none"
           style={{ fontSize: px(64) }}
         >
           N
@@ -114,7 +129,7 @@ function PosterContent({
       </div>
 
       <div
-        className="text-white/55"
+        className="text-white/70"
         style={{
           fontSize: px(26),
           letterSpacing: '0.22em',
@@ -125,19 +140,35 @@ function PosterContent({
         TEMPORADA 4 · NETFLIX · SESIÓN #{numeroSesion}
       </div>
 
-      <div style={{ flex: 1, minHeight: px(60) }} />
+      {/* STICKER del personaje — protagonista visual */}
+      <div
+        className="flex-1 flex items-center justify-center"
+        style={{ minHeight: px(60) }}
+      >
+        <img
+          src={stickerSrc}
+          alt={personajeNombre}
+          style={{
+            width: '100%',
+            maxWidth: px(720),
+            height: 'auto',
+            objectFit: 'contain',
+          }}
+        />
+      </div>
 
+      {/* Diagnóstico */}
       <div>
         <div
           style={{
             height: '2px',
-            background: 'rgba(255,255,255,0.20)',
+            background: 'rgba(255,255,255,0.30)',
             marginBottom: px(40),
           }}
         />
 
         <div
-          className="text-white/60"
+          className="text-white/75"
           style={{
             fontSize: px(24),
             letterSpacing: '0.26em',
@@ -150,12 +181,13 @@ function PosterContent({
         </div>
 
         <div
-          className="text-white/85 italic"
+          className="text-white italic"
           style={{
             fontFamily: 'Space Grotesk, sans-serif',
             fontSize: px(38),
             fontWeight: 400,
             marginBottom: px(12),
+            opacity: 0.95,
           }}
         >
           sos una
@@ -195,7 +227,7 @@ function PosterContent({
         <div
           style={{
             paddingTop: px(28),
-            borderTop: '2px solid rgba(255,255,255,0.15)',
+            borderTop: '2px solid rgba(255,255,255,0.30)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -212,7 +244,7 @@ function PosterContent({
             {SHARE_URL}
           </div>
           <div
-            className="text-white/45"
+            className="text-white/65"
             style={{
               fontSize: px(24),
               fontWeight: 500,
@@ -238,6 +270,7 @@ export default function TarjetaWrapped({
   const [working, setWorking] = useState(false);
   const p = PERSONAJES[personaje];
   const wrapClass = WRAP_CLASS[personaje];
+  const stickerSrc = STICKER_PATH[personaje];
 
   const fraseFinal = fraseIconica || p.fraseIconica;
 
@@ -251,7 +284,7 @@ export default function TarjetaWrapped({
       pixelRatio: 1,
       width: STORY_WIDTH,
       height: STORY_HEIGHT,
-      backgroundColor: '#0A0A0A',
+      backgroundColor: '#CC0055',
     });
   };
 
@@ -316,19 +349,11 @@ export default function TarjetaWrapped({
           style={{ aspectRatio: '9/16', width: '100%' }}
         >
           <div className="noise-overlay" />
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              top: '-15%', right: '-20%',
-              width: '70%', height: '50%',
-              background: 'radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%)',
-              filter: 'blur(40px)',
-            }}
-          />
           <PosterContent
             fraseIconica={fraseFinal}
             numeroSesion={numeroSesion}
             personajeNombre={p.nombre}
+            stickerSrc={stickerSrc}
             scale={0.32}
           />
         </div>
@@ -351,19 +376,11 @@ export default function TarjetaWrapped({
             style={{ width: STORY_WIDTH, height: STORY_HEIGHT }}
           >
             <div className="noise-overlay" />
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                top: '-15%', right: '-20%',
-                width: '70%', height: '50%',
-                background: 'radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%)',
-                filter: 'blur(120px)',
-              }}
-            />
             <PosterContent
               fraseIconica={fraseFinal}
               numeroSesion={numeroSesion}
               personajeNombre={p.nombre}
+              stickerSrc={stickerSrc}
               scale={1}
             />
           </div>
@@ -373,7 +390,7 @@ export default function TarjetaWrapped({
           <button
             onClick={handleCompartir}
             disabled={working}
-            className="bg-[#CC0055] hover:bg-[#FF1A6E] active:bg-[#FF1A6E] text-white py-3 transition-all disabled:opacity-50 t-headline"
+            className="bg-[#CC0055] hover:bg-[#FF1A6E] active:bg-[#FF1A6E] text-white py-3 transition-all disabled:opacity-50 t-headline border-2 border-white/40"
           >
             {working ? '...' : '↑ Compartir'}
           </button>

@@ -38,7 +38,6 @@ html, body {
 }
 
 body {
-  /* Reservar espacio para safe areas en iOS */
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -46,11 +45,10 @@ body {
 .font-display { font-family: 'Barlow Condensed', sans-serif; }
 .font-body { font-family: 'Space Grotesk', sans-serif; }
 
-/* CRÍTICO: previene zoom automático en iOS Safari al tappear inputs/textareas */
 textarea, input, select {
   font-family: inherit;
   letter-spacing: -0.01em;
-  font-size: 16px !important; /* iOS NO hace zoom si es ≥16px */
+  font-size: 16px !important;
 }
 
 button {
@@ -62,7 +60,6 @@ textarea:focus, button:focus, input:focus { outline: none; }
 textarea::placeholder { color: rgba(255,255,255,0.25); }
 ::selection { background: var(--magenta); color: white; }
 
-/* ── Apple HIG type scale ── */
 .t-display    { font-size: clamp(48px, 12vw, 88px); font-weight: 900; line-height: 0.88; letter-spacing: -0.025em; }
 .t-title-1    { font-size: clamp(24px, 5vw, 32px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
 .t-title-2    { font-size: clamp(19px, 4vw, 22px); font-weight: 600; line-height: 1.2; letter-spacing: -0.015em; }
@@ -74,7 +71,6 @@ textarea::placeholder { color: rgba(255,255,255,0.25); }
 .t-footnote   { font-size: 11px; font-weight: 500; line-height: 1.3; letter-spacing: 0.02em; }
 .t-caption    { font-size: 10px; font-weight: 600; line-height: 1.2; letter-spacing: 0.18em; text-transform: uppercase; }
 
-/* ── Cinematic background ── */
 .bg-cinema {
   background:
     radial-gradient(ellipse 100% 60% at 50% 0%, rgba(204,0,85,0.18), transparent 50%),
@@ -82,7 +78,6 @@ textarea::placeholder { color: rgba(255,255,255,0.25); }
     #0A0A0A;
 }
 
-/* ── Animations ── */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 .fade-up { animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
 
@@ -111,66 +106,30 @@ textarea::placeholder { color: rgba(255,255,255,0.25); }
 @keyframes pulse-dot { 0%, 100% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } }
 .pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; display: inline-block; }
 
-/* ── Scrollbar ── */
 .conversation::-webkit-scrollbar { width: 4px; }
 .conversation::-webkit-scrollbar-track { background: transparent; }
 .conversation::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 
-/* ── Wrapped poster gradients per character ── */
-.wrap-victoria {
-  background:
-    radial-gradient(circle at 22% 8%, #FF2D8E 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #7A0E3F 0%, transparent 60%),
-    linear-gradient(135deg, #1A0010 0%, #2E0820 100%);
-}
-.wrap-matias {
-  background:
-    radial-gradient(circle at 22% 8%, #5B6FFF 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #3D2A78 0%, transparent 60%),
-    linear-gradient(135deg, #0A0A1F 0%, #15102E 100%);
-}
-.wrap-nicolas {
-  background:
-    radial-gradient(circle at 25% 8%, #9C7320 0%, transparent 50%),
-    radial-gradient(circle at 75% 95%, #3A2810 0%, transparent 60%),
-    linear-gradient(135deg, #0F0A05 0%, #1F1610 100%);
-}
-.wrap-carolina {
-  background:
-    radial-gradient(circle at 22% 8%, #1A8866 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #0E5C5C 0%, transparent 60%),
-    linear-gradient(135deg, #021416 0%, #042024 100%);
-}
-.wrap-lu {
-  background:
-    radial-gradient(circle at 22% 8%, #C04AA0 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #5B1A6B 0%, transparent 60%),
-    linear-gradient(135deg, #180520 0%, #2A0A35 100%);
-}
-.wrap-debbie {
-  background:
-    radial-gradient(circle at 22% 8%, #C76020 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #A82E0E 0%, transparent 60%),
-    linear-gradient(135deg, #1A0A05 0%, #2A140A 100%);
-}
-.wrap-melina {
-  background:
-    radial-gradient(circle at 22% 8%, #FF4DA6 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #9C1462 0%, transparent 60%),
-    linear-gradient(135deg, #1F0518 0%, #350A28 100%);
-}
+/* ═══════════════════════════════════════
+   PALETA WRAPPED — MAGENTA SÓLIDO PARA TODOS
+═══════════════════════════════════════ */
+
+.wrap-victoria,
+.wrap-matias,
+.wrap-nicolas,
+.wrap-carolina,
+.wrap-lu,
+.wrap-debbie,
+.wrap-melina,
 .wrap-fernanda {
-  background:
-    radial-gradient(circle at 22% 8%, #A55BFF 0%, transparent 50%),
-    radial-gradient(circle at 78% 95%, #5C0C5C 0%, transparent 60%),
-    linear-gradient(135deg, #15001A 0%, #260330 100%);
+  background: #CC0055;
 }
 
 .noise-overlay {
   position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  opacity: 0.08;
+  opacity: 0.06;
   mix-blend-mode: overlay;
   pointer-events: none;
 }
@@ -192,6 +151,5 @@ textarea::placeholder { color: rgba(255,255,255,0.25); }
   border-radius: 2px;
 }
 
-/* ── Safe area helpers ── */
 .safe-top { padding-top: env(safe-area-inset-top); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
