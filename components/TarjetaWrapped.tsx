@@ -72,15 +72,14 @@ function useAutoFitText(text: string, maxFontSize = 280, minFontSize = 100, safe
 
 interface PosterContentProps {
   fraseIconica: string;
-  descripcionPersonaje: string;
   numeroSesion: number;
   personajeNombre: string;
   scale?: number;
 }
 
+// FRASE ICÓNICA DEL PERSONAJE — la pieza viral, no contiene info de la sesión
 function PosterContent({
   fraseIconica,
-  descripcionPersonaje,
   numeroSesion,
   personajeNombre,
   scale = 1,
@@ -99,7 +98,6 @@ function PosterContent({
       className="relative z-10 h-full flex flex-col"
       style={{ padding: px(72) }}
     >
-      {/* Header */}
       <div className="flex items-start justify-between" style={{ marginBottom: px(20) }}>
         <div
           className="font-display font-black text-white leading-none tracking-tight"
@@ -127,43 +125,8 @@ function PosterContent({
         TEMPORADA 4 · NETFLIX · SESIÓN #{numeroSesion}
       </div>
 
-      {/* Frase */}
-      <div
-        className="flex-1 flex items-center"
-        style={{ paddingTop: px(80), paddingBottom: px(80) }}
-      >
-        <div
-          className="w-full glass-card"
-          style={{ padding: px(56), borderRadius: px(8) }}
-        >
-          <div
-            className="text-white/65"
-            style={{
-              fontSize: px(24),
-              letterSpacing: '0.26em',
-              fontWeight: 600,
-              marginBottom: px(32),
-              fontFamily: 'Space Grotesk, sans-serif',
-            }}
-          >
-            FERNANDA DICE
-          </div>
-          <p
-            className="text-white italic"
-            style={{
-              fontFamily: 'Space Grotesk, sans-serif',
-              fontSize: px(54),
-              lineHeight: 1.32,
-              fontWeight: 300,
-              letterSpacing: '-0.015em',
-            }}
-          >
-            &ldquo;{fraseIconica}&rdquo;
-          </p>
-        </div>
-      </div>
+      <div style={{ flex: 1, minHeight: px(60) }} />
 
-      {/* Diagnóstico */}
       <div>
         <div
           style={{
@@ -198,7 +161,7 @@ function PosterContent({
           sos una
         </div>
 
-        <div ref={containerRef} className="w-full" style={{ marginBottom: px(32) }}>
+        <div ref={containerRef} className="w-full" style={{ marginBottom: px(40) }}>
           <div
             ref={textRef}
             className="font-display font-black text-white leading-[0.86] tracking-tight"
@@ -211,18 +174,23 @@ function PosterContent({
           </div>
         </div>
 
-        <p
-          className="text-white/72"
-          style={{
-            fontFamily: 'Space Grotesk, sans-serif',
-            fontSize: px(34),
-            lineHeight: 1.45,
-            fontWeight: 400,
-            marginBottom: px(56),
-          }}
+        <div
+          className="glass-card"
+          style={{ padding: px(40), borderRadius: px(8), marginBottom: px(48) }}
         >
-          {descripcionPersonaje}
-        </p>
+          <p
+            className="text-white italic"
+            style={{
+              fontFamily: 'Space Grotesk, sans-serif',
+              fontSize: px(40),
+              lineHeight: 1.32,
+              fontWeight: 400,
+              letterSpacing: '-0.015em',
+            }}
+          >
+            &ldquo;{fraseIconica}&rdquo;
+          </p>
+        </div>
 
         <div
           style={{
@@ -270,6 +238,8 @@ export default function TarjetaWrapped({
   const [working, setWorking] = useState(false);
   const p = PERSONAJES[personaje];
   const wrapClass = WRAP_CLASS[personaje];
+
+  const fraseFinal = fraseIconica || p.fraseIconica;
 
   const generar = async (): Promise<string | null> => {
     if (!exportRef.current) return null;
@@ -333,7 +303,6 @@ export default function TarjetaWrapped({
       }}
     >
       <div className="w-full max-w-[360px] sm:max-w-sm">
-        {/* Mensaje viral arriba */}
         <div className="text-center mb-6">
           <div className="t-caption text-[#CC0055] mb-2">TU DIAGNÓSTICO ESTÁ LISTO</div>
           <p className="t-body-lg text-white italic font-light leading-snug">
@@ -342,7 +311,6 @@ export default function TarjetaWrapped({
           </p>
         </div>
 
-        {/* PREVIEW (visible, escalada) */}
         <div
           className={`${wrapClass} relative overflow-hidden`}
           style={{ aspectRatio: '9/16', width: '100%' }}
@@ -358,15 +326,13 @@ export default function TarjetaWrapped({
             }}
           />
           <PosterContent
-            fraseIconica={fraseIconica}
-            descripcionPersonaje={descripcionPersonaje || p.descripcion}
+            fraseIconica={fraseFinal}
             numeroSesion={numeroSesion}
             personajeNombre={p.nombre}
             scale={0.32}
           />
         </div>
 
-        {/* EXPORT (oculto, 1080x1920) */}
         <div
           aria-hidden
           style={{
@@ -395,8 +361,7 @@ export default function TarjetaWrapped({
               }}
             />
             <PosterContent
-              fraseIconica={fraseIconica}
-              descripcionPersonaje={descripcionPersonaje || p.descripcion}
+              fraseIconica={fraseFinal}
               numeroSesion={numeroSesion}
               personajeNombre={p.nombre}
               scale={1}
